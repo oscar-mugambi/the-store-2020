@@ -18,13 +18,14 @@ const config = {
 //userAth is the fat obj we got from google
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   //only perform save if you get a userAuth obj
+
   if (!userAuth) return;
 
   //if it exists, query inside the firestore to see if it already exists
   const userRef = firestore.doc(`users/${userAuth.uid}`);
   const snapShot = await userRef.get(); //check whether we have already stored it
 
-  if (!snapShot) {
+  if (!snapShot.exists) {
     // if it doesnt exist, we create it and we use our userRef
     //see what properties you want to store
     const { displayName, email } = userAuth;
